@@ -23,9 +23,24 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+       $name = fake()->name;
+       $letter = fake()->randomElement(range('A', 'Z'));
+        $numbers = fake()->numerify('########'); // Generate random 7-digit number
+        $numbers = (strlen($numbers) == 6) ? '0' . $numbers : $numbers; // Ensure 7-digit number if needed
+        $letter = fake()->lexify('?'); // Generate random letter A-Z
+        $digits = fake()->numerify('##'); // Generate random 2-digit number
+        // Randomly choose between 6 or 7 digits after the hyphen
+        $national_id = fake()->numerify('##-') . $numbers . $letter . $digits;
+
+        $sex = fake()->randomElement(['male','female']);
         return [
-            'name' => fake()->name(),
+            'second_name' => fake()->name(),
+            'first_name' => fake()->name(),
+            'slug' =>$name.uniqid(),
             'email' => fake()->unique()->safeEmail(),
+             'national_id' => $national_id,
+             'sex' =>$sex,
+             'phone_number' =>fake()->phoneNumber(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
