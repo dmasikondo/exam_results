@@ -68,6 +68,6 @@ class User extends Authenticatable
     public function assignRole($role)
     {
 
-        return $this->roles()->save(Role::firstOrCreate(['name' =>$role, 'label'=>$role]));
+        return $this->roles()->save(Role::firstOrCreate(['name' =>$role]));
     }
 }
