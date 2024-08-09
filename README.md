@@ -19,10 +19,10 @@ This Web App is built using Laravel 11 Framework  with Breeze livewire stack, Al
 
 - Authentication system
 - Access Control Level Management
-- User Management System (suspensions, account creation from dashboard, account activation)
+- User Management System (suspensions, account creation from dashboard and console command, account activation)
 - User Profile
 - Notification System
 - Detailed Dashboard for Exams, Candidates, Accountancy, Admins and Management
-- File Management System
+- File Management System handling of csv files
 - Commenting System
 
