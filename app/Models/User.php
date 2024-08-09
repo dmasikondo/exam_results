@@ -50,4 +50,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(Student::class);
     }
+
+   public function staff()
+    {
+        return $this->hasMany(Staff::class,'user_id');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class)->withTimestamps();
+    }
+
+    /**
+     * Assign user a role
+     */
+
+    public function assignRole($role)
+    {
+
+        return $this->roles()->save(Role::firstOrCreate(['name' =>$role, 'label'=>$role]));
+    }
 }
