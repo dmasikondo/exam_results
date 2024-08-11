@@ -70,4 +70,9 @@ class User extends Authenticatable
 
         return $this->roles()->save(Role::firstOrCreate(['name' =>$role]));
     }
+
+    public function userAvatar()
+    {
+        return strtoupper(substr($this->first_name, 0, 1) . substr($this->second_name, 0, 1));
+    }
 }
