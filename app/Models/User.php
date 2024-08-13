@@ -61,6 +61,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
 
+
     /**
      * Assign user a role
      */
@@ -69,6 +70,11 @@ class User extends Authenticatable
     {
 
         return $this->roles()->save(Role::firstOrCreate(['name' =>$role]));
+    }
+
+    public function results()
+    {
+        return $this->hasMany(Result::class, 'users_id');
     }
 
     public function userAvatar()
