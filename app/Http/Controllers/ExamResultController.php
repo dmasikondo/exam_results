@@ -103,7 +103,7 @@ class ExamResultController extends Controller
         session()->flash('message', "Scroll down for results of Candidate No. $candidate_number for $exam_session ");
         $array = [$latestIntakeResults];
         //dd($array);
-        return view('examResults.myresults',[
+        return view('examResults.checked-results',[
             'examResults'=>$latestIntakeResults,
             'leadingResults' =>$leadingResult,
             'candidateNumber' =>$candidate_number,
