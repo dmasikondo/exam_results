@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use League\CommonMark\Node\Inline\Newline;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -80,6 +81,7 @@ class CreateStaffUser extends Command
             'email' => $user['email'],
             'must_reset'=>true,
             'password' => Hash::make($user['password']),
+            'must_reset_password_token'=>Str::random(60),
         ]);
 
         $department_id = Department::where('name',$user['department'])->pluck('id')->first();
@@ -136,6 +138,7 @@ class CreateStaffUser extends Command
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]);
+
 
             if ($validator->fails()) {
                 $errorMessage = $validator->errors()->first() . PHP_EOL . ' YOU NEED TO RE-ENTER ALL THE VALUES AFRESH';

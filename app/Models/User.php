@@ -37,6 +37,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'token_expiry' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -72,6 +73,14 @@ class User extends Authenticatable
         return $this->roles()->save(Role::firstOrCreate(['name' =>$role]));
     }
 
+    /**
+      * Check if the user has role of
+    */
+    public function hasRole($role)
+    {
+        return  (bool) $this->roles()->where('name',$role)->count();
+    } 
+
     public function results()
     {
         return $this->hasMany(Result::class, 'users_id');
@@ -81,4 +90,20 @@ class User extends Authenticatable
     {
         return strtoupper(substr($this->first_name, 0, 1) . substr($this->second_name, 0, 1));
     }
+
+     public function isStudent()
+     {
+        return (bool) $this?->results()->where('users_id', $this->id)->count();
+     }
+
+     /**
+      * check if user belongs to a given department
+      */
+
+     public function belongsTodepartmentOf($dept)
+     {
+        $department = Department::where('name',$dept)->first();
+        //dd($department->id);
+        return (bool)($this?->staff()->where('user_id', $this->id)->where('department_id',$department->id)->count());
+     }
 }
