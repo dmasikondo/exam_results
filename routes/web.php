@@ -19,4 +19,8 @@ Route::view('checkMyresults', 'examresults.checked-results')
     ->name('check-results');
 Route::post('checkMyresults',[ExamResultController::class,'checkMyresults'])->middleware(['auth']);
 
+Route::view('send-proof-of-payment', 'fees.send-proof-ofpayment')
+    ->middleware(['auth'])
+    ->name('proof-of-payment');
+
 require __DIR__.'/auth.php';
