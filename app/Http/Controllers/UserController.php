@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -16,6 +17,7 @@ class UserController extends Controller
 
     public function activate()
     {
+        Gate::authorize('activate', User::class);
         $token = auth()->user()->must_reset_password_token;
         return view('users.activate',['token'=>$token]);
     }
@@ -54,7 +56,7 @@ class UserController extends Controller
            return redirect()->back();
         }
         $user->update(['must_reset' =>0,'password'=>Hash::make(request('password'))]);
-        
+
         session()->flash('message',"Your account was successfully activated. You can now login using your new password");
         Auth::logout();
          return redirect('/login') ;
