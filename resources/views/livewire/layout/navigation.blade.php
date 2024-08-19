@@ -39,6 +39,11 @@ new class extends Component
                         {{ __('Exam Results') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -62,6 +67,7 @@ new class extends Component
                     </x-slot>
 
                     <x-slot name="content">
+
                         <!-- Account Management -->
                         <div class="block px-4 py-2 text-xs text-gray-400 border-b-gray-200">
                             {{ __('Manage Your Account') }}
@@ -118,7 +124,7 @@ new class extends Component
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="text-base font-medium text-gray-800 dark:text-gray-200" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+                <div class="text-base font-medium text-gray-800 dark:text-gray-200" x-data="{{ json_encode(['name' => auth()->user()->first_name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
                 <div class="text-sm font-medium text-gray-500">{{ auth()->user()->email }}</div>
             </div>
 

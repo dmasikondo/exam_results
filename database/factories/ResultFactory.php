@@ -24,7 +24,7 @@ class ResultFactory extends Factory
             //'user_id'=> fn()=>User::factory()->create()->id,
             'intake_id' => fn()=>Intake::factory()->create()->id,
             'discipline' =>fake()->word(),
-            'course_code' =>fake()->word,
+            'course_code' =>fake()->word(),
             'candidate_number' =>fake()->numerify('######').fake()->lexify('?'),
             'surname'=>fake()->name(),
             'names'=>fake()->name(),

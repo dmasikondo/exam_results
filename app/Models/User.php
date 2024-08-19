@@ -79,7 +79,7 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return  (bool) $this->roles()->where('name',$role)->count();
-    } 
+    }
 
     public function results()
     {
@@ -100,10 +100,94 @@ class User extends Authenticatable
       * check if user belongs to a given department
       */
 
-     public function belongsTodepartmentOf($dept)
+     public function belongsToDepartmentOf($dept)
      {
         $department = Department::where('name',$dept)->first();
-        //dd($department->id);
         return (bool)($this?->staff()->where('user_id', $this->id)->where('department_id',$department->id)->count());
      }
+
+   /**
+      * filters for searching criteria in accounts dashboard
+      */
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['department'] ?? false, fn($query, $department) =>
+        $query->whereHas('results', fn ($query) =>
+            $query->where('discipline', $department)
+            )
+        );
+        //system fees clearance status options
+        $query->when($filters['clearance_status'] ?? false, fn($query, $clearance_status) =>
+            $query->whereHas('fees', fn($query)=>
+                //cleared option is selected
+                $query->when($clearance_status=='cleared',fn($query)=>
+                    $query->where('is_cleared',1)
+                )
+                //pending option is selected
+                ->when($clearance_status=='pending',fn($query)=>
+                    $query->where('is_cleared',0)
+                          ->whereNull('clearer_id')
+                          ->whereNull('cleared_at')
+                )
+                //declined option is selected
+                ->when($clearance_status=='declined',fn($query)=>
+                    $query->where('is_cleared',0)
+                          ->whereNull('clearer_id')
+                          ->whereNotNull('cleared_at')
+                )
+            )
+        );
+
+
+        $query->when($filters['second_name'] ?? false, fn($query, $second_name) =>
+        $query->has('results')
+            ->where('second_name', 'like', '%' . $second_name . '%')
+
+        );
+        $query->when($filters['first_name'] ?? false, fn($query, $first_name) =>
+        $query->has('results')
+            ->where('first_name', 'like', '%' . $first_name . '%')
+
+        );
+        $query->when($filters['nat_id'] ?? false, fn($query, $nat_id) =>
+        $query->has('results')
+            ->where('national_id', 'like', '%' . $nat_id . '%')
+        );
+        $query->when($filters['exam_session'] ?? false, fn($query, $exam_session) =>
+            $query->whereHas('results', fn ($query) =>
+            $query->where('intake_id', $exam_session)
+            )
+        );
+
+    }
+
+    public function scopeFilters($query, array $filters)
+    {
+        //filter by user's role
+        $query->when($filters['role'] ?? false, fn($query, $role) =>
+            $query->whereHas('roles', fn ($query) =>
+            $query->where('name', $role)
+            )
+        );
+
+        //filter by user's surname
+        $query->when($filters['surname'] ?? false, fn($query, $surname) =>
+            $query->where('second_name', 'like', '%' . $surname . '%')
+        );
+
+        // filter by user's first name
+        $query->when($filters['first_name'] ?? false, fn($query, $first_name) =>
+            $query->where('first_name', 'like', '%' . $first_name . '%')
+        );
+
+        // filter by user's email
+        $query->when($filters['email'] ?? false, fn($query, $email) =>
+            $query->where('email', 'like', '%' . $email . '%')
+        );
+
+        //filter by Exam Session
+
+
+    }
+
 }

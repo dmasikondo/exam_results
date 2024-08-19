@@ -18,9 +18,15 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user): bool
     {
-        //
+        if ($user->hasRole('superadmin') || ($user->hasRole('hod') &&$user->belongsToDepartmentOf('IT Unit'))){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
     /**
@@ -28,7 +34,12 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        //
+        if ($user->hasRole('superadmin') || ($user->hasRole('hod') &&$user->belongsToDepartmentOf('IT Unit'))){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -36,12 +47,17 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        //
+        return $user->id != $model->id && ($user->belongsToDepartmentOf('IT Unit')|| $user->hasRole('hod'));
     }
 
     public function activate(User $user)
     {
         return $user->must_reset == true;
+    }
+
+    public function updateSelf(User $model, User $user)
+    {
+        return $user->id != $model->id;
     }
 
     /**

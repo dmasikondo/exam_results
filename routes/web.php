@@ -33,5 +33,19 @@ Route::put('/users/activate-account',[UserController::class, 'activation'])
         ->name('proof-of-payment');
 
     });
+    Route::get('/users/registration', [UserController::class, 'create'])
+        ->name('staff-user-create');
+
+    Route::post('/users/registration', [UserController::class, 'store'])
+        ->name('user-store');
+
+    Route::get('/users/{user:slug}/edit', [UserController::class, 'edit'])
+        ->name('user-edit');
+
+    Route::put('/users/{user:slug}', [UserController::class, 'update'])
+        ->name('user-update');
+
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('users');
 
 require __DIR__.'/auth.php';

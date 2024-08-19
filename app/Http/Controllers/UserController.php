@@ -2,15 +2,122 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    /**
+     * show all the users
+     */
+    public function index()
+    {
+        Gate::authorize('view', User::class);
+
+        //check for requested number of pages to be displayed
+        if(request()->perPage && intval(request()->perPage) > 0){
+            $numberOfRecordsPerPage = request()->perPage;
+        }
+        else{
+            $numberOfRecordsPerPage = 20;
+        }
+        $roles = Role::orderBy('name')->get();
+        $users = User::filters(request(['role','surname','first_name','email']))
+         ->with('roles','staff.department')
+         ->paginate($numberOfRecordsPerPage)->withQueryString();
+
+        return view('users.index', compact('roles','users'));
+    }
+
+    /**
+     * Show the form for registering users
+     * To IT mgr & IT Unit
+     */
+    public function create()
+    {
+        Gate::authorize('create', User::class);
+        $roles =Role::orderBy('name')->get();
+        $departments =Department::orderBy('name')->get();
+        return view('users.create', compact('roles','departments'));
+    }
+
+    /**
+     * Store the newly created user in storage
+     */
+
+    public function store(Request $request)
+    {
+        Gate::authorize('create', User::class);
+        $validated = $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'role' => ['required', 'string', 'max:255'],
+            'department' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $slug = request()->surname.uniqid();
+        $user= User::create([
+            'slug' =>$slug,
+            'second_name' =>request()->last_name,
+            'first_name' =>request()->first_name,
+            'email' => request()->email,
+            'must_reset'=>true,
+            'password' => Hash::make(request()->password),
+            'must_reset_password_token'=>Str::random(60),
+        ]);
+        $user->staff()->create(['user_id'=>$user->id,'department_id'=>request()->department]);
+        $user->roles()->sync(request()->role);
+        session()->flash('message',"User was successfully registered");
+         return redirect('/users/registration') ;
+
+    }
+
+    public function edit(User $user)
+    {
+        Gate::authorize('create', User::class);
+        $roles =Role::orderBy('name')->get();
+        $departments =Department::orderBy('name')->get();
+
+        return view ('users.create', compact('user','roles','departments'));
+    }
+
+    public function update(Request $request, User  $user)
+    {
+        Gate::authorize('create', User::class);
+        $validated = $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'role' => ['required', 'string', 'max:255'],
+            'department' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+
+        ]);
+
+        $user->update([
+            'second_name' =>request()->last_name,
+            'first_name' =>request()->first_name,
+            'email' => request()->email,
+            'must_reset'=>true,
+            'password' => Hash::make(request()->password),
+            'must_reset_password_token'=>Str::random(60),
+        ]);
+
+        $user->staff()->update(['department_id'=>request()->department]);
+        $user->roles()->sync(request()->role);
+        session()->flash('message',"User was successfully updated");
+
+        return redirect('/users/registration') ;
+    }
     /**
      * Show the form for activating a user account
      */
@@ -28,6 +135,7 @@ class UserController extends Controller
      */
     public function activation(Request $request)
     {
+        Gate::authorize('activate', User::class);
 
         $request->validate([
         'first_name' => ['required', 'string', 'max:255','exists:users,first_name'],

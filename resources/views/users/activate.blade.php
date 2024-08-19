@@ -31,7 +31,7 @@
                                 required
                                 class="@error('first_name')border-red-400 @enderror"
                             />
-                            <x-input-label for="candidate_number">First Name(s)</x-form.label>
+                            <x-input-label for="first_name">First Name(s)</x-input-label>
                             <div class="absolute top-0 right-0 mt-2 mr-2">
                             </div>
                                 <p>
@@ -47,7 +47,7 @@
                                 required
                                 class="@error('second_name')border-red-400 @enderror"
                             />
-                            <x-input-label for="second_name">Last Name</x-form.label>
+                            <x-input-label for="second_name">Last Name</x-input-label>
                             <div class="absolute top-0 right-0 mt-2 mr-2">
                             </div>
                                 <p>
@@ -66,7 +66,7 @@
                                 required
                                 class="@error('password')border-red-400 @enderror"
                             />
-                            <x-input-label for="password">New Password</x-form.label>
+                            <x-input-label for="password">New Password</x-input-label>
                             <div class="absolute top-0 right-0 mt-2 mr-2">
                             </div>
                                 <p>
@@ -82,7 +82,7 @@
                                 required
                                 class="@error('password_confirmation')border-red-400 @enderror"
                             />
-                            <x-input-label for="password_confirmation">Confirm Password</x-form.label>
+                            <x-input-label for="password_confirmation">Confirm Password</x-input-label>
                             <div class="absolute top-0 right-0 mt-2 mr-2">
                             </div>
                                 <p>
