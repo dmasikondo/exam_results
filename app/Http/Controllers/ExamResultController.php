@@ -145,4 +145,10 @@ class ExamResultController extends Controller
         return $paidUpIntakes;
     }
 
+    public function uploadCsv()
+    {
+        Gate::authorize('create', Result::class);
+        return view('examResults.upload-csv');
+    }
+
 }

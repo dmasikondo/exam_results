@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Result;
+use App\Models\Fee;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class ResultPolicy
+class FeePolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,9 +19,9 @@ class ResultPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user): bool
+    public function view(User $user, Fee $fee): bool
     {
-        return $user->results()->exists();
+        //
     }
 
     /**
@@ -40,7 +40,7 @@ class ResultPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Result $result): bool
+    public function update(User $user, Fee $fee): bool
     {
         //
     }
@@ -48,7 +48,7 @@ class ResultPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Result $result): bool
+    public function delete(User $user, Fee $fee): bool
     {
         //
     }
@@ -56,7 +56,7 @@ class ResultPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Result $result): bool
+    public function restore(User $user, Fee $fee): bool
     {
         //
     }
@@ -64,7 +64,7 @@ class ResultPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Result $result): bool
+    public function forceDelete(User $user, Fee $fee): bool
     {
         //
     }
