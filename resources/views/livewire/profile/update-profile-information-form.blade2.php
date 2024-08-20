@@ -8,16 +8,23 @@ use Livewire\Volt\Component;
 
 new class extends Component
 {
-    public string $name = '';
-    public string $email = '';
+    public string $national_id = '';
+    public string $phone_number = '';
+    public string $surname = '';
+    public string $names = '';
 
     /**
      * Mount the component.
      */
     public function mount(): void
     {
+        $this->national_id = Auth::user()->national_id;
+        $this->second_name = Auth::user()->second_name;
+        //$this->names = Auth::user()->names;
 
-        $this->email = Auth::user()->email;
+        // Check if phone_number be null before assignin' a value
+        $userPhoneNumber = Auth::user()->phone_number;
+        $this->phone_number = $userPhoneNumber ?? ''; // Assign an empty string if phone number be null
     }
 
     /**
@@ -28,14 +35,15 @@ new class extends Component
         $user = Auth::user();
 
         $validated = $this->validate([
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
+            'national_id' => ['required', 'string', 'max:255', Rule::unique(User::class)->ignore($user->id), ],
+            'phone_number' => ['required', 'string', 'max:20', 'regex:/^(0|\+)[0-9]{6,19}$/', Rule::unique(User::class)->ignore($user->id)],
         ]);
 
         $user->fill($validated);
 
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
+        // if ($user->isDirty('email')) {
+        //     $user->email_verified_at = null;
+        // }
 
         $user->save();
 
@@ -45,7 +53,7 @@ new class extends Component
     /**
      * Send an email verification notification to the current user.
      */
-    public function sendVerification(): void
+    /* public function sendVerification(): void
     {
         $user = Auth::user();
 
@@ -58,7 +66,7 @@ new class extends Component
         $user->sendEmailVerificationNotification();
 
         Session::flash('status', 'verification-link-sent');
-    }
+    }*/
 
 }; ?>
 
@@ -74,11 +82,16 @@ new class extends Component
     </header>
 
     <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
+        <div class="relative mt-4">
+            <x-text-input wire:model="national_id" id="national_id" name="national_id" type="text" class="block w-full mt-1" required autofocus autocomplete="national_id" placeholder="national_id" />
+            <x-input-label for="national_id" :value="__('National ID')" />
+            <x-input-error class="mt-2" :messages="$errors->get('national_id')" />
+        </div>
 
         <div class="relative mt-4">
-            <x-text-input wire:model="email" id="email" name="email" type="email" class="block w-full mt-1" required  placeholder="Email"/>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+            <x-text-input wire:model="phone_number" id="phone_number" name="phone_number" type="tel" class="block w-full mt-1" required  placeholder="Phone Number"/>
+            <x-input-label for="phone_number" :value="__('Phone Number')" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
 
             @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())
                 <div>
