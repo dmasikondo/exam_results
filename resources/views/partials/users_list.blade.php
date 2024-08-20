@@ -27,7 +27,7 @@
                           </div>
                         </div>
                         <div>
-                        <a href="/users/{{$user->slug}}" class="text-blue-400 hover:text-gray-400">
+                        <a href="/users/{{$user->slug}}/edit" class="text-blue-400 hover:text-gray-400">
                           <p class="font-semibold">
                             {{$user['second_name']}} {{$user->first_name}}
                        @cannot('updateSelf',$user, Auth::user())
