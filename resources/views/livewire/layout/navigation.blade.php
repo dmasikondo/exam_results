@@ -31,19 +31,79 @@ new class extends Component
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                        {{ __('') }}
                     </x-nav-link>
                 </div>
+        <!-- Student -->
+          @if(Auth::user()->isStudent())
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('myresults')" :active="request()->routeIs('myresults')" wire:navigate>
+                        <x-icon name="book-open" class="size-4"/>
                         {{ __('Exam Results') }}
                     </x-nav-link>
                 </div>
+
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('check-results')" :active="request()->routeIs('check-results')" wire:navigate>
+                        <x-icon name="academic-cap" class="size-4"/>
+                        {{ __('Check Other Results') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="#" wire:navigate>
+                        <x-icon name="question-mark-circle" class="size-4"/>
+                        {{ __('Exam Queries') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="#" wire:navigate>
+                        <x-icon name="currency-dollar" class="size-4"/>
+                        {{ __('Fees Clearance') }}
+                    </x-nav-link>
+                </div>
+            @endif
+         <!--./ Student -->
+
+          {{-- ITU --}}
+
+      @if(Auth::user()->hasRole('superadmin') || (Auth::user()->belongsTodepartmentOf('IT Unit') && Auth::user()->hasRole('hod')))
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('staff-user-create')" :active="request()->routeIs('staff-user-create')" wire:navigate>
+                        <x-icon name="user-add" class="size-4"/>
+                        {{ __(' Add Staff User') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('users')" :active="request()->routeIs('users')" wire:navigate>
+                        <x-icon name="users" class="size-4"/>
+                        {{ __(' Users') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('results-csv')" :active="request()->routeIs('results-csv')" wire:navigate>
+                        <x-icon name="ticked" class="size-4"/>
+                        {{ __(' Exam Results csv') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('cleared-students-csv')" :active="request()->routeIs('cleared-students-csv')" wire:navigate>
+                        <x-icon name="arrow-path" class="size-4"/>&nbsp;
+                        {{ __(' Cleared Students csv') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="https://github.com/dmasikondo/exam_results"  target="_blank">
+                        <x-icon name="book-open" class="size-4"/>
+                        {{ __(' Documentation') }}
+                    </x-nav-link>
+                </div>
+      @endif
+      {{-- ./ITU --}}
             </div>
 
             <!-- Settings Dropdown -->
