@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="mx-4 mt-4">
-      <div class="overflow-hidden rounded-lg shadow-xs max-w-7xl">
+      <div class="mx-auto overflow-hidden rounded-lg shadow-xs max-w-7xl">
 
         <div class="overflow-x-auto">
             @include('partials.search_user')
@@ -17,3 +17,4 @@
      </div>
     </div>
 </x-app-layout>
+
