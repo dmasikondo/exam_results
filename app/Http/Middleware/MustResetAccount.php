@@ -16,6 +16,7 @@ class MustResetAccount
      */
     public function handle(Request $request, Closure $next): Response
     {
+
         if(Auth::check() && $request->user()->must_reset == 1){
 
              return redirect()->route('account-activate');

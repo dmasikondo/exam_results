@@ -69,7 +69,7 @@ new class extends Component
 
       @if(Auth::user()->hasRole('superadmin') || (Auth::user()->belongsTodepartmentOf('IT Unit') && Auth::user()->hasRole('hod')))
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('staff-user-create')" :active="request()->routeIs('staff-user-create')" wire:navigate>
+                    <x-nav-link :href="route('staff-user-create')" :active="request()->routeIs('staff-user-create') || request()->routeIs('user-edit')" wire:navigate>
                         <x-icon name="user-add" class="size-4"/>
                         {{ __(' Add Staff User') }}
                     </x-nav-link>
@@ -175,27 +175,118 @@ new class extends Component
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
+
+    {{-- isStudent --}}
+    @if(Auth::user()->isStudent())
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center" :href="route('myresults')" :active="request()->routeIs('myresults')" wire:navigate>
+                <x-icon name="book-open" class="size-4"/>
+                {{ __(' Other Results') }}
             </x-responsive-nav-link>
         </div>
+
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center" :href="route('check-results')" :active="request()->routeIs('check-results')" wire:navigate>
+                <x-icon name="academic-cap" class="size-4"/>
+                {{ __(' Other Results') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center" :href="route('results-csv')" :active="request()->routeIs('results-csv')" wire:navigate>
+                <x-icon name="ticked" class="size-4"/>
+                {{ __(' Exam Results csv') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center" href="#" wire:navigate>
+                <x-icon name="question-mark-circle" class="size-4"/>
+                {{ __(' Exam Queries') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center" href="#" wire:navigate>
+                <x-icon name="currency-dollar" class="size-4"/>
+                {{ __(' Fees Clearance') }}
+            </x-responsive-nav-link>
+        </div>
+    @endif
+    {{-- ./isStudent --}}
+
+
+    {{-- isITU --}}
+    @if(Auth::user()->hasRole('superadmin') || (Auth::user()->belongsTodepartmentOf('IT Unit') && Auth::user()->hasRole('hod')))
+
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center" :href="route('staff-user-create')" :active="request()->routeIs('staff-user-create')  || request()->routeIs('user-edit')" wire:navigate>
+                <x-icon name="user-add" class="size-4"/>
+                {{ __(' Add Staff User') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center" :href="route('users')" :active="request()->routeIs('users')" wire:navigate>
+                <x-icon name="users" class="size-4"/>
+                {{ __(' Users') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center" :href="route('results-csv')" :active="request()->routeIs('results-csv')" wire:navigate>
+                <x-icon name="ticked" class="size-4"/>
+                {{ __(' Exam Results csv') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center" :href="route('cleared-students-csv')" :active="request()->routeIs('cleared-students-csv')" wire:navigate>
+                <x-icon name="arrow-path" class="size-4"/>
+                {{ __(' Cleared Students csv') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-x-1">
+            <x-responsive-nav-link class="flex items-center"  href="https://github.com/dmasikondo/exam_results"  target="_blank">
+                <x-icon name="book-open" class="size-4"/>
+                {{ __(' Documentation') }}
+            </x-responsive-nav-link>
+        </div>
+    @endif
+
+    {{-- ./isITU --}}
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="text-base font-medium text-gray-800 dark:text-gray-200" x-data="{{ json_encode(['name' => auth()->user()->first_name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
-                <div class="text-sm font-medium text-gray-500">{{ auth()->user()->email }}</div>
+                <div class="text-base font-medium text-gray-800 dark:text-gray-200" x-data="{{-- {{ json_encode(['name' => auth()->user()->first_name]) }} --}}" x-text="name" x-on:profile-updated.window="name = $event.detail.name">
+                </div>
+
+                <div class="flex items-center justify-center w-8 h-8 mb-2 bg-blue-100 rounded-full">
+                    <span class="text-sm font-semibold">
+                        {{ auth()->user()->userAvatar() }}
+                    </span>
+                </div>
+                <div class="text-sm font-medium text-gray-500">
+                    {{ auth()->user()->first_name.' '.  auth()->user()->second_name }}
+                </div>
+                <div class="block px-4 py-2 text-xs text-gray-400">
+                    <x-icon name="mail" class="w-6 h-6 text-blue-100"/>
+                    {{ Auth::user()->email }}
+                </div>
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile')" wire:navigate>
+                <x-responsive-nav-link class="flex items-center" :href="route('profile')" :active="request()->routeIs('profile')" wire:navigatewire:navigate>
+                    <x-icon name="user" class="size-4"/>
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
                 <button wire:click="logout" class="w-full text-start">
-                    <x-responsive-nav-link>
+                    <x-responsive-nav-link class="flex items-center">
+                        <x-icon name="lock-closed" class="size-4"/>
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </button>
