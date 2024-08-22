@@ -40,7 +40,6 @@
 
         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 
-
         @foreach($intakeExamResults as $examResult)
             <tr class="text-gray-700 bg-gray-100 divide-y">
 
