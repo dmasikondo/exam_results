@@ -21,7 +21,9 @@ class ResultSeeder extends Seeder
             'names' => 'results',
             'candidate_number' => 'another',
             'discipline' => 'Something',
-            'exam_session' => 'Aug 2024'
+            'exam_session' => 'Aug 2024',
+            'is_btec' => 1,
+            'programme' => 'b-tech honours degree in mass communication programme',
         ]);
     }
 }

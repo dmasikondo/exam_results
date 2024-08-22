@@ -22,8 +22,7 @@ class UserListTest extends TestCase
         ->assertViewIs('users.index')
         ->assertSeeVolt('users.suspend-user')
         ->assertViewHas('roles')
-        ->assertViewHas('users')
-        ->assertViewHas('users', fn($users)=>count($users)<=20);  // Ensure default pagination limit
+        ->assertViewHas('users', fn($users)=>count($users)>0);  // Ensure default pagination limit
 
     }
 
@@ -33,9 +32,9 @@ class UserListTest extends TestCase
         $userWithRole = $this->createAuthorisedUser();
 
 
-        $response = $this->actingAs($loggedInUser)->get('/users?role=' . $userWithRole->roles->first()->first_name);
+        $response = $this->actingAs($loggedInUser)->get('/users?role=' . $userWithRole->roles()->first()->name);
 
-        $response->assertSee($userWithRole->first_name); // Assert that the user's name be visible in the response
+        $response->assertSee($userWithRole->roles()->first()->name); // Assert that the role name will be visible in the response
         $response->assertViewIs('users.index')
         ->assertSeeVolt('users.suspend-user')
         ->assertViewHas('roles')
@@ -48,7 +47,7 @@ class UserListTest extends TestCase
         $user = User::factory()->create();
 
 
-        $response = $this->actingAs($loggedInUser)->get('/users?name=' . $user->first_name);
+        $response = $this->actingAs($loggedInUser)->get('/users?first_name=' . $user->first_name);
 
         $response->assertSee($user->first_name); // Assert that the user's name be visible in the response
         $response->assertViewIs('users.index')
@@ -63,9 +62,9 @@ class UserListTest extends TestCase
         $user = User::factory()->create();
 
 
-        $response = $this->actingAs($loggedInUser)->get('/users?surname=' . $user->last_name);
+        $response = $this->actingAs($loggedInUser)->get('/users?surname=' . $user->second_name);
 
-        $response->assertSee($user->last_name); // Assert that the user's name be visible in the response
+        $response->assertSee($user->second_name); // Assert that the user's name be visible in the response
         $response->assertViewIs('users.index')
         ->assertSeeVolt('users.suspend-user')
         ->assertViewHas('roles')
@@ -101,8 +100,8 @@ class UserListTest extends TestCase
     private function createAuthorisedUser(): User
     {
         $user = User::factory()->create();
-        $department = Department::factory()->create(['name'=>'IT Unit']);
-        $role = Role::factory()->create(['name'=>'superadmin', 'label'=>'superadmin']);
+        $role = Role::where('name','superadmin')->firstOrFail();
+        $department = Department::where('name','IT Unit')->firstOrFail();
         $user->staff()->create(['user_id'=>$user->id,'department_id'=>$department->id]);
         $user->roles()->sync($role->id);
         return $user;

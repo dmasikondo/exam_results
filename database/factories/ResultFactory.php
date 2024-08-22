@@ -20,6 +20,7 @@ class ResultFactory extends Factory
     public function definition(): array
     {
         $gradeClasses = ['1', '2.1', '2.2', '3', 'F', 'deferred', 'exempted', 'fail'];
+        $isBtec =[1, 0];
         return [
             //'user_id'=> fn()=>User::factory()->create()->id,
             'intake_id' => fn()=>Intake::factory()->create()->id,
@@ -33,6 +34,7 @@ class ResultFactory extends Factory
             'grade' => fake()->randomElement($gradeClasses),
             'exam_session' => fake()->word().' 2024',
             'comment' =>fake()->randomElement($gradeClasses),
+            'is_btec' =>fake()->randomElement($isBtec),
         ];
     }
 }

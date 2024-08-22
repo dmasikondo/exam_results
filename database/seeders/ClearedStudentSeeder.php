@@ -16,7 +16,7 @@ class ClearedStudentSeeder extends Seeder
     {
         ClearedStudent::factory()->create([
             'intake_id'=>2,
-            'national_id_name'=>'44-0000000B10 vanhu2 vakuru2'
+            'national_id_name'=>'44-0000000B10 someone cleared'
         ]);
 
     }

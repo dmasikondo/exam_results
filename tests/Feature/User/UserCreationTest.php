@@ -48,7 +48,7 @@ class UserCreationTest extends TestCase
             'password_confirmation' => 'password123',
         ];
 
-        $response = $this->post('/users/registration', $userData);
+        $response = $this->actingAs($user)->post('/users/registration', $userData);
 
         $response->assertSessionHas('message', "User was successfully registered");
         $response->assertRedirect('/users/registration');
@@ -77,7 +77,7 @@ class UserCreationTest extends TestCase
     {
         $user = $this->createAuthorisedUser();
 
-        $response = $this->post('/users/registration', [
+        $response = $this->actingAs($user)->post('/users/registration', [
             'first_name' => '', // Empty first name to trigger validation error
             'last_name' => 'Doe',
             'role' => 'Role',

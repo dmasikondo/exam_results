@@ -21,6 +21,8 @@ new class extends Component {
 
         $unpaidIntakesIds = array_unique(array_diff($unpaidUpIntakesFromFees,$paidUpIntakesFromClearedStudents));
         $this->unpaidIntakes = Intake::whereIn('id', $unpaidIntakesIds)->get();
+
+        
     }
 }; ?>
 

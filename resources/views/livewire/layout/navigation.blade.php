@@ -57,7 +57,7 @@ new class extends Component
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="#" wire:navigate>
+                    <x-nav-link href="#" :active="request()->routeIs('proof-of-payment')"  wire:navigate>
                         <x-icon name="currency-dollar" class="size-4"/>
                         {{ __('Fees Clearance') }}
                     </x-nav-link>
@@ -193,13 +193,6 @@ new class extends Component
         </div>
 
         <div class="pt-2 pb-3 space-x-1">
-            <x-responsive-nav-link class="flex items-center" :href="route('results-csv')" :active="request()->routeIs('results-csv')" wire:navigate>
-                <x-icon name="ticked" class="size-4"/>
-                {{ __(' Exam Results csv') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <div class="pt-2 pb-3 space-x-1">
             <x-responsive-nav-link class="flex items-center" href="#" wire:navigate>
                 <x-icon name="question-mark-circle" class="size-4"/>
                 {{ __(' Exam Queries') }}
@@ -207,7 +200,7 @@ new class extends Component
         </div>
 
         <div class="pt-2 pb-3 space-x-1">
-            <x-responsive-nav-link class="flex items-center" href="#" wire:navigate>
+            <x-responsive-nav-link class="flex items-center" href="#" :active="request()->routeIs('proof-of-payment')" wire:navigate>
                 <x-icon name="currency-dollar" class="size-4"/>
                 {{ __(' Fees Clearance') }}
             </x-responsive-nav-link>

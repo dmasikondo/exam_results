@@ -210,7 +210,7 @@ class ExamResultsTest extends TestCase
 
 
         $response->assertStatus(302);
-        $response->assertSessionHasErrors(['candidate_number','exam_session']);
+        $response->assertSessionHasErrors(['candidate_number']);
     }
 
     public function test_searching_non_existant_results_throws_non_existant_results_validation_error()

@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
@@ -188,6 +189,27 @@ class User extends Authenticatable
         //filter by Exam Session
 
 
+    }
+
+
+    /**
+     * Get the user's first name capitalised first letter.
+     */
+    private function first_name(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => ucfirst($value),
+        );
+    }
+
+    /**
+     * Get the user's surname capitalised first letter.
+     */
+    private function last_name(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => ucfirst($value),
+        );
     }
 
 }
