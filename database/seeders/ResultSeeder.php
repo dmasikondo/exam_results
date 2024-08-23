@@ -17,11 +17,11 @@ class ResultSeeder extends Seeder
         $intake =Intake::factory()->create(['title'=>'Level 1 Semester 1']);
         Result::factory()->count(10)->create([
             'intake_id'=>$intake->id,
-            'surname' => 'semester1',
-            'names' => 'name1',
-            'candidate_number' => 'another1',
+            'surname' => 'surname01',
+            'names' => 'names01',
+            'candidate_number' => '000000A1',
             'discipline' => 'Something',
-            'exam_session' => 'June 2024',
+            'exam_session' => '2024',
             'is_btec' => 1,
             'programme' => 'b-tech honours degree in mass communication programme',
         ]);

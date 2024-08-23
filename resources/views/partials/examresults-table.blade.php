@@ -8,9 +8,14 @@
         <p class="flex justify-between"><span class="font-bold">INSTITUTION NAME:</span>
             <span>Harare Polytechnic</span> {{$leadingResults['is_btec'] ? 'in collaboration with N.U.S.T' : ''}}
         </p>
-        <p class="flex justify-between"><span class="font-bold">COURSE LEVEL:</span><span>{{$leadingResults['course_code']}}</span></p>
+        <p class="flex justify-between"><span class="font-bold">
+            {{$leadingResults['is_btec']? 'PROGRAMME': 'COURSE'}} LEVEL:
+            </span><span>{{$leadingResults['course_code']}}</span>
+        </p>
         <p class="flex justify-between">
-            <span class="font-bold">COURSE TITLE:</span>
+            <span class="font-bold">
+                {{$leadingResults['is_btec']? 'PROGRAMME': 'COURSE'}} TITLE:
+            </span>
          @if($leadingResults['is_btec'])
             <span class="text-red-700">{{strtoupper($leadingResults['programme'])}}</span>
         @else

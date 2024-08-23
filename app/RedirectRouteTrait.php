@@ -13,7 +13,7 @@ trait RedirectRouteTrait
             return 'myresults';
         }
         else{
-            return 'dashboard';
+        return 'dashboard';
         }
     }
 }
