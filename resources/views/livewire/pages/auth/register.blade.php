@@ -12,9 +12,12 @@ use App\Models\Result;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\RedirectRouteTrait;
 
 new #[Layout('layouts.guest')] class extends Component
 {
+    use RedirectRouteTrait;
+
     public string $surname = '';
     public string $names = '';
     public string $candidate_number;
@@ -69,7 +72,9 @@ new #[Layout('layouts.guest')] class extends Component
                 DB::rollBack(); // If an error occurs, roll back to the savepoint
             }
         });
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+
+        $this->redirect(route($this->redirectToRoute(), absolute: false), navigate: true);
+
     }
 
     }

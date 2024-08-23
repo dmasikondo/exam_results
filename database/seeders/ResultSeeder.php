@@ -14,14 +14,14 @@ class ResultSeeder extends Seeder
      */
     public function run(): void
     {
-        $intake =Intake::factory()->create(['title'=>'Aug 2024']);
+        $intake =Intake::factory()->create(['title'=>'Level 1 Semester 1']);
         Result::factory()->count(10)->create([
             'intake_id'=>$intake->id,
-            'surname' => 'seeded',
-            'names' => 'results',
-            'candidate_number' => 'another',
+            'surname' => 'semester1',
+            'names' => 'name1',
+            'candidate_number' => 'another1',
             'discipline' => 'Something',
-            'exam_session' => 'Aug 2024',
+            'exam_session' => 'June 2024',
             'is_btec' => 1,
             'programme' => 'b-tech honours degree in mass communication programme',
         ]);

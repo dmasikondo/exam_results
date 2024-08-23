@@ -44,7 +44,7 @@ new class extends Component {
 
         if($uploadResult['errorMessage']) {
            $this->addError('file', $uploadResult['errorMessage']);
-           //$this->addError('file', 'An error occurred during file upload');
+          // $this->addError('file', 'An error occurred during file upload');
             $this->disableForm();
         }
         else {
