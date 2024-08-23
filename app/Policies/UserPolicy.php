@@ -20,13 +20,9 @@ class UserPolicy
      */
     public function view(User $user): bool
     {
-        if ($user->hasRole('superadmin') || ($user->hasRole('hod') &&$user->belongsToDepartmentOf('IT Unit'))){
-            return true;
-        }
-        else{
-            return false;
-        }
 
+        return $this->hasSuperadminRole($user) ||
+            $this->hasHodRoleInItuDepartment($user);
     }
 
     /**
@@ -34,12 +30,14 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->hasRole('superadmin') || ($user->hasRole('hod') &&$user->belongsToDepartmentOf('IT Unit'))){
-            return true;
-        }
-        else{
-            return false;
-        }
+        // if ($user->hasRole('superadmin') || ($user->hasRole('hod') &&$user->belongsToDepartmentOf('IT Unit'))){
+        //     return true;
+        // }
+        // else{
+        //     return false;
+        // }
+        return $this->hasSuperadminRole($user) ||
+            $this->hasHodRoleInItuDepartment($user);
     }
 
     /**
@@ -82,5 +80,18 @@ class UserPolicy
     public function forceDelete(User $user, User $model): bool
     {
         //
+    }
+
+    private function hasSuperadminRole($user)
+    {
+        return $user->roles()->where('name', 'superadmin')->exists();
+    }
+
+    private function hasHodRoleInItuDepartment($user)
+    {
+        return $user->roles->contains('name', 'hod') &&
+                $user->staff->whereHas('department', function($q) {
+                $q->where('name', 'ITU');
+                })->exists();
     }
 }

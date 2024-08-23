@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +17,10 @@ class MustResetAccount
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        if(Auth::check() && $request->user()->must_reset == 1){
-
-             return redirect()->route('account-activate');
+        if ($request->user() && $request->user()->must_reset) {
+            return redirect()->route('activate');
         }
+
         return $next($request);
     }
 }
