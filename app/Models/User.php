@@ -195,20 +195,22 @@ class User extends Authenticatable
     /**
      * Get the user's first name capitalised first letter.
      */
-    private function first_name(): Attribute
+    protected function firstName(): Attribute
     {
         return Attribute::make(
             get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
     /**
      * Get the user's surname capitalised first letter.
      */
-    private function last_name(): Attribute
+    protected function secondName(): Attribute
     {
         return Attribute::make(
             get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 

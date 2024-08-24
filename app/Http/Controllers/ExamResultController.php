@@ -121,7 +121,6 @@ class ExamResultController extends Controller
 
     }
 
-
     private function paidUpIntakesArray(): array
     {
         /**
