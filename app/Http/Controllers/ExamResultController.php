@@ -6,28 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Models\ClearedStudent;
 use App\Models\Intake;
 use App\Models\Result;
+use App\Services\PaidupExamSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class ExamResultController extends Controller
 {
+
+    public function __construct(private PaidupExamSession $paidUpExamSession)
+    {
+
+    }
     public function getLatestIntakeResultsForPaidUpUser()
     {
         $loggedInUser = auth()->user();
 
         Gate::authorize('view', Result::class);
 
-        // retrieve the paid up intakes for the user from fees table
-        $paidUpIntakesFromFees = $loggedInUser->fees->where('is_cleared', true)->pluck('intake_id')->toArray();
-
-        // Retrieve the intake IDs that the user be paid up for from the cleared_students table based on national_id_name
-        $paidUpIntakesFromClearedStudents = ClearedStudent::where('national_id_name', 'like', '%' . $loggedInUser->national_id . '%')
-            ->pluck('intake_id')
-            ->toArray();
-
-        // Merge the intake IDs from both sources to get all paid up intake IDs
-        $paidUpIntakes = array_unique(array_merge($paidUpIntakesFromFees, $paidUpIntakesFromClearedStudents));
+        $paidUpIntakes = $this->paidUpExamSession->paidUpIntakesArray($loggedInUser);
 
         $latestIntakeResults = $loggedInUser->results()
             ->whereIn('intake_id', $paidUpIntakes)
@@ -59,6 +56,8 @@ class ExamResultController extends Controller
         $loggedInUser = auth()->user();
 
         Gate::authorize('view', Result::class);
+
+        $paidUpIntakes = $this->paidUpExamSession->paidUpIntakesArray($loggedInUser);
 
         //validate, check if there are results with the given candidate number matching first name and surname
 
@@ -93,11 +92,13 @@ class ExamResultController extends Controller
             $loggedInUser->fees()->create(['intake_id'=>request()->exam_session,'cleared_at'=>NULL,'slug'=>$uniq_slug]);
 
         }
-        $searchedIntakeResults = Result::where('candidate_number',request()      ->candidate_number)
+
+
+        $searchedIntakeResults = Result::where('candidate_number',request()->candidate_number)
         ->where('names',$loggedInUser->first_name)
         ->where('surname',$loggedInUser->second_name)
         ->where('intake_id',request()->exam_session)
-        ->whereIn('intake_id', $this->paidUpIntakesArray())
+        ->whereIn('intake_id', $paidUpIntakes)
         ->get()
         ->groupBy('intake_id');
 
@@ -112,7 +113,7 @@ class ExamResultController extends Controller
 
         session()->flash('message', "Scroll down for results of Candidate No. $candidate_number for $exam_session ");
         $array = [$searchedIntakeResults];
-        //dd($array);
+
         return view('examResults.checked-results',[
             'examResults'=>$searchedIntakeResults,
             'leadingResults' =>$leadingResult,
@@ -121,28 +122,6 @@ class ExamResultController extends Controller
 
     }
 
-    private function paidUpIntakesArray(): array
-    {
-        /**
-         * return an array of the intakes that a logged in user is paid for
-         * as provided by fees table and uploaded csv file in cleared_students table
-         */
-
-
-        $loggedInUser = auth()->user();
-
-        // retrieve the paid up intakes for the user from fees table
-        $paidUpIntakesFromFees = $loggedInUser->fees->where('is_cleared', true)->pluck('intake_id')->toArray();
-
-        // Retrieve the intake IDs that the user paid up for, from the cleared_students table based on national_id_name
-        $paidUpIntakesFromClearedStudents = ClearedStudent::where('national_id_name', 'like', '%' . $loggedInUser->national_id . '%')
-            ->pluck('intake_id')
-            ->toArray();
-
-        // Merge the intake IDs from both sources to get all paid up intake IDs
-        $paidUpIntakes = array_unique(array_merge($paidUpIntakesFromFees, $paidUpIntakesFromClearedStudents));
-        return $paidUpIntakes;
-    }
 
     public function uploadCsv()
     {
