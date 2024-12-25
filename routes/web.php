@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'welcome');
 
 
-Route::middleware(['auth','verified','reset'])->group(function(){
+Route::middleware(['auth','reset','verified'])->group(function(){
 Route::get('/users/activate-account',[UserController::class, 'activate'])
     ->name('account-activate')
     ->withoutMiddleware('reset');
@@ -36,8 +36,7 @@ Route::put('/users/activate-account',[UserController::class, 'activation'])
     Route::view('send-proof-of-payment', 'fees.send-proof-ofpayment')
         ->name('proof-of-payment');
 
-    });
-    Route::get('/users/registration', [UserController::class, 'create'])
+        Route::get('/users/registration', [UserController::class, 'create'])
         ->name('staff-user-create');
 
     Route::post('/users/registration', [UserController::class, 'store'])
@@ -53,6 +52,9 @@ Route::put('/users/activate-account',[UserController::class, 'activation'])
         ->name('users');
 
     Route::get('/fees/upload-csv', [FeeController::class, 'uploadcsv'])
-        ->name('cleared-students-csv');
+        ->name('cleared-students-csv');        
+
+    });
+
 
 require __DIR__.'/auth.php';

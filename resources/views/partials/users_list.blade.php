@@ -34,7 +34,7 @@
                           (Me)
                        @endcannot
                           </p>
-                          <p class="text-xs text-gray-600 dark:text-gray-400">Created 3 days ago</p>
+                          <p class="text-xs text-gray-600 dark:text-gray-400">Created {{$user->created_at->diffForHumans()}}</p>
                         </a>
 
                         </div>

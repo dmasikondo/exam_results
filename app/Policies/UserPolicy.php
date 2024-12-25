@@ -82,6 +82,11 @@ class UserPolicy
         //
     }
 
+    public function mustReset(User $user)
+    {
+        return $user->must_reset == true;
+    }
+
     private function hasSuperadminRole($user)
     {
         return $user->roles()->where('name', 'superadmin')->exists();

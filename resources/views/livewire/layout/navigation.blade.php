@@ -34,6 +34,8 @@ new class extends Component
                         {{ __('') }}
                     </x-nav-link>
                 </div>
+      @cannot('mustReset', auth()->user())          
+      
         <!-- Student -->
           @if(Auth::user()->isStudent())
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -104,6 +106,8 @@ new class extends Component
                 </div>
       @endif
       {{-- ./ITU --}}
+
+     @endcannot
             </div>
 
             <!-- Settings Dropdown -->
@@ -175,6 +179,8 @@ new class extends Component
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+
+ @cannot('mustReset', auth()->user())  
 
     {{-- isStudent --}}
     @if(Auth::user()->isStudent())
@@ -250,12 +256,16 @@ new class extends Component
 
     {{-- ./isITU --}}
 
+ @endcannot
+
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="text-base font-medium text-gray-800 dark:text-gray-200" x-data="{{-- {{ json_encode(['name' => auth()->user()->first_name]) }} --}}" x-text="name" x-on:profile-updated.window="name = $event.detail.name">
+                <div class="text-base font-medium text-gray-800 dark:text-gray-200" x-data="{{ json_encode(['name' => auth()->user()->first_name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name">
                 </div>
-
+                <div class="block px-4 py-2 text-xs text-gray-400 border-b-gray-200">
+                    {{ __('Manage Your Account') }}
+                </div>
                 <div class="flex items-center justify-center w-8 h-8 mb-2 bg-blue-100 rounded-full">
                     <span class="text-sm font-semibold">
                         {{ auth()->user()->userAvatar() }}
