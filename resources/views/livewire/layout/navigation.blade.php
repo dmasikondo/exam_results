@@ -29,11 +29,11 @@ new class extends Component
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('') }}
                     </x-nav-link>
-                </div>
+                </div> --}}
       @cannot('mustReset', auth()->user())          
       
         <!-- Student -->
@@ -103,9 +103,9 @@ new class extends Component
                         <x-icon name="book-open" class="size-4"/>
                         {{ __(' Documentation') }}
                     </x-nav-link>
-                </div>
+                </div>               
       @endif
-      {{-- ./ITU --}}
+      {{-- ./ITU --}} 
 
      @endcannot
             </div>
@@ -261,7 +261,7 @@ new class extends Component
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="text-base font-medium text-gray-800 dark:text-gray-200" x-data="{{ json_encode(['name' => auth()->user()->first_name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name">
+                <div class="text-base font-medium text-gray-800 dark:text-gray-200" x-data="{{ json_encode(['name' => auth()->user()->first_name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.first_name">
                 </div>
                 <div class="block px-4 py-2 text-xs text-gray-400 border-b-gray-200">
                     {{ __('Manage Your Account') }}

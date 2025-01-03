@@ -53,6 +53,10 @@ new class extends Component {
 
 <div>
     <div class="my-4">
+        <p class="inline px-4 py-3 font-bold text-gray-400 rounded-full">
+            <x-icon name="exclamation" class="size-5 text-orange-600"/>
+           Before you upload a .csv file  to the database <small class="text-orange-600">(size must be less than 2MB),</small> read carefully the notes given below
+        </p>
         <h2 class="my-2 font-semibold">
             Choose or create exam session from the list
         </h2>
