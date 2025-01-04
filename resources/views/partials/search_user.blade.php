@@ -22,7 +22,7 @@
     <form action="/users">
       <div class="flex flex-col gap-2 space-y-4 lg:flex-row center">
         <div class="relative flex-1 mt-4">
-          <select  id="role" name="role" placeholder="Select a User Role" title="Role">
+          <select  id="role" name="role" placeholder="Select a User Role" title="Role" class="w-full h-12 border-gray-300 rounded-md shadow-sm">
             <option value="" class="hover:bg-indigo-100">All: Roles</option>
           @foreach($roles as $role)
             <option value="{{$role->name}}" {{request('role')== $role->name? 'selected':''}} >{{$role->name}}</option>

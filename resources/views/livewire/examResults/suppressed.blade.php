@@ -16,11 +16,14 @@ new class extends Component {
             ->where('is_cleared', false)
             ->pluck('intake_id')->toArray();
 
+       // dd($unpaidUpIntakesFromFees);
         $paidUpIntakesFromClearedStudents = ClearedStudent::where('national_id_name', 'like', '%' . $loggedInUser->national_id . '%')
             ->pluck('intake_id')->toArray();
 
         $unpaidIntakesIds = array_unique(array_diff($unpaidUpIntakesFromFees,$paidUpIntakesFromClearedStudents));
         $this->unpaidIntakes = Intake::whereIn('id', $unpaidIntakesIds)->get();
+
+      //  dd('there is some unpaid intake of '.$this->unpaidIntakes);
 
         
     }

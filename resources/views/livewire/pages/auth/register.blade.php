@@ -55,13 +55,13 @@ new #[Layout('layouts.guest')] class extends Component
         unset($validated['candidate_number']);
         $validated['password'] = Hash::make($validated['password']);
 
-        $IntakeIdsNotYetAssignedToUser = Result::where('candidate_number', $this->candidate_number)->where('surname',$this->surname)->where('names',$this->names)->whereNull('users_id')->distinct()->pluck('intake_id');
-//dd($IntakeIdsNotYetAssignedToUser);
-        DB::transaction(function()use ($validated, $uniq_slug, $IntakeIdsNotYetAssignedToUser){
+        $IntakeIdsNotYetAssignedToUserResult = Result::where('candidate_number', $this->candidate_number)->where('surname',$this->surname)->where('names',$this->names)->whereNull('users_id')->distinct()->pluck('intake_id');
+
+        DB::transaction(function()use ($validated, $uniq_slug, $IntakeIdsNotYetAssignedToUserResult){
             DB::beginTransaction(); // Set a savepoint within the transaction
                 $user = User::create($validated);
             try{
-                foreach($IntakeIdsNotYetAssignedToUser as $intake){
+                foreach($IntakeIdsNotYetAssignedToUserResult as $intake){
                     $user->fees()->create(['intake_id'=>$intake,'cleared_at'=>null,'slug'=>$uniq_slug]);
                 }
 

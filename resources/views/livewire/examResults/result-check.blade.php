@@ -17,13 +17,13 @@
             oninvalid="this.setCustomValidity('Please select an Exam Session')"
             oninput="this.setCustomValidity('')"
             required
-            class="@error('candidate_number')invalid:border-pink-500 invalid:text-pink-600 @enderror"
+            class="w-full h-12 border-gray-300 rounded-md shadow-sm @error('candidate_number')invalid:border-pink-500 invalid:text-pink-600 @enderror"
           >
             <option value="" class="hover:bg-indigo-100" disabled selected>Exam Session</option>
           @foreach($intakes as $intake)
             <option value="{{$intake->id}}"{{ (collect(old('exam_session'))->contains($intake->id)) ? 'selected':'' }}>{{$intake->label}}</option>
           @endforeach
-          <select>
+        </select>
           <x-input-label for="exam_session">Exam Session</x-form.label>
             <p>
                 @error('exam_session')

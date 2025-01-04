@@ -112,7 +112,7 @@
 
                         <div class="flex flex-col gap-2 my-4 md:flex-row center">
                                 <div class="relative flex-1 w-full mt-4">
-                                    <select id="role"  name="role" placeholder="Select a User Role" required>
+                                    <select id="role"  name="role" placeholder="Select a User Role" class="w-full h-12 border-gray-300 rounded-md shadow-sm" required>
                                         <option value="" class="py-4 border-l-4 border-transparent hover:border-blue-500 "></option>
                                     @foreach($roles as $role)
                                         <option value="{{$role->id}}" @if((old('role') && old('role') == $role->id) || (isset($user) && $user->roles->contains('id', $role->id))) selected @endif class="h-12">
@@ -125,7 +125,7 @@
                                 </div>
 
                                 <div class="relative flex-1 mt-4">
-                                    <select id="department"  name="department" placeholder="Select the User's Department" required>
+                                    <select id="department"  name="department" placeholder="Select the User's Department" class="w-full h-12 border-gray-300 rounded-md shadow-sm" required>
                                         <option value="" class="py-4 border-l-4 border-transparent hover:border-blue-500 "></option>
                                     @foreach($departments as $department)
                                         <option value="{{$department->id}}" @if((old('department') && old('department') == $department->id) || (isset($user) && $user->staff->contains('department_id', $department->id))) selected @endif class="h-12">
