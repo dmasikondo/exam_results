@@ -1,6 +1,6 @@
 @if(isset($examResults))
   @if(!$examResults->isEmpty())
-    <div class="w-3/4 py-2 my-4">
+    <div class="w-full py-2 my-4">
         <p class="flex justify-between sm:space-x-6"><span class="font-bold">CANDIDATE NUMBER:</span><span>{{$leadingResults['candidate_number']}}</span></p>
         <p class="flex justify-between sm:space-x-6"><span class="font-bold">COMMENT:</span><span>{{$leadingResults['comment']}}</span></p>
         <p class="flex justify-between"><span class="font-bold">SURNAME:</span><span>{{$leadingResults['surname']}}</span></p>
@@ -46,7 +46,7 @@
         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 
         @foreach($intakeExamResults as $examResult)
-            <tr class="text-gray-700 bg-gray-100 divide-y">
+            <tr class="text-gray-700 bg-gray-100 divide-y hover:bg-gray-50">
 
                 <td class="px-4 py-3 text-sm">{{$examResult->subject}}</td>
                 <td class="px-4 py-3 text-sm">{{$examResult->subject_code}}</td>
