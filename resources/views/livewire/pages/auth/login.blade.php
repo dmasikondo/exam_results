@@ -34,6 +34,7 @@ new #[Layout('layouts.guest')] class extends Component
 
 <div class="my-4">
     <x-session-message/>
+    <x-session-warning/>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

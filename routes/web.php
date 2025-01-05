@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'welcome');
 
 
-Route::middleware(['auth','reset','verified'])->group(function(){
-Route::get('/users/activate-account',[UserController::class, 'activate'])
+Route::middleware(['auth','reset','verified','suspended',])->group(function(){
+    Route::get('/users/activate-account',[UserController::class, 'activate'])
     ->name('account-activate')
     ->withoutMiddleware('reset');
 
-Route::put('/users/activate-account',[UserController::class, 'activation'])
+    Route::put('/users/activate-account',[UserController::class, 'activation'])
     ->withoutMiddleware('reset');
 
     Route::view('dashboard', 'dashboard')
