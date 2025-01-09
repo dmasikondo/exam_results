@@ -36,7 +36,8 @@ class WelcomeTest extends TestCase
 
     public function test_copyright_message_is_correct_year():void
     {
+        $year = date('Y');
         $response = $this->get('/');
-        $response->assertSee('2024 IT Unit');
+        $response->assertSee($year.' IT Unit');
     }
 }

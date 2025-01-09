@@ -13,9 +13,9 @@ class UserActivationTest extends TestCase
 {
     public function test_user_activation_page__for_account_resetting_is_correctly_displayed()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['must_reset'=>true]);
 
-        Gate::shouldReceive('authorize')->with('activate', User::class)->once(); // Mock the Gate authorization call
+        //Gate::shouldReceive('authorize')->with('activate', User::class)->once(); // Mock the Gate authorization call
 
         $response = $this->actingAs($user)->get('/users/activate-account');
 

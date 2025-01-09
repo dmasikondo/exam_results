@@ -16,7 +16,6 @@ class UserCreationTest extends TestCase
     public function test_staff_user_creation_page_can_be_accessed_by_authorized_user()
     {
         $user = $this->createAuthorisedUser();
-
         Gate::define('create', function ($user) {
             return true; // Simulate authorization to create users
         });
